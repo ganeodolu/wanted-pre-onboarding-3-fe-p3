@@ -14,13 +14,13 @@ export const login = async (args: LoginRequest): Promise<LoginResult> => {
 	// body에는 { username, password }가 들어가야 함
 	// 사용하는 기술에 맞추어 적절히 withCredential 설정하기
 	const { username, password } = args;
-	const res = await axios.post(
+	const response = await axios.post(
 		`${BASE_URL}/auth/login`,
 		{ username, password },
 		{ withCredentials: true }
 	);
-  if(res.data.message === '로그인 성공'){
-    return res.data.result
+  if(response.data.message === '로그인 성공'){
+    return response.data.result
 	}
 	
 	return "fail";
@@ -31,5 +31,10 @@ export const getCurrentUserInfo = async (): Promise<User | null> => {
 	// 호출 성공시 유저 정보 반환
 	// 마찬가지로 사용하는 기술에 맞추어 적절히 withCredential 설정하기
 
-	return null;
+	const response = await axios.get(
+		`${BASE_URL}/profile`,
+		{ withCredentials: true }
+	);
+
+	return response.statusText === "OK" ? response.data : null;
 };
